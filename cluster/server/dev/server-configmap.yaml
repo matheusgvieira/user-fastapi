@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: userfastapi-server-configmap
+  namespace: userfastapi
+data:
+  NODE_ENV: development
+
+  PORT: "8000"
+  HTTPS: "false"
+  BASE_URL: "http://local.userfastapi.com.br"
+
+  JWT_EXPIRATION: "10"
+
+  REDIS_HOST: userfastapi-server-redis
+  REDIS_PORT: "6363"

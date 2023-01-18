@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: userfastapi-server-postgres
+  name: userfastapi-server-postgres
+  namespace: userfastapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userfastapi-server-postgres
+  template:
+    metadata:
+      labels:
+        app: userfastapi-server-postgres
+    spec:
+      containers:
+        - image: postgres:latest
+          name: userfastapi-server-postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "96a7172b-d383-424a-bfc6-5e967f95740b"
+            - name: POSTGRES_DB
+              value: "usersfastapi"
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-storage
+          hostPath:
+            path: /var/lib/userfastapi/postgresql
+            type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userfastapi-server-postgres
+  labels:
+    app: userfastapi-server-postgres
+  namespace: userfastapi
+spec:
+  selector:
+    app: userfastapi-server-postgres
+  type: ClusterIP
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userfastapi-server-postgres-lb
+  labels:
+    app: userfastapi-server-postgres
+  namespace: userfastapi
+spec:
+  selector:
+    app: userfastapi-server-postgres
+  type: LoadBalancer
+  ports:
+    - port: 5552
+      protocol: TCP
+      targetPort: 5432

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: userfastapi-server
+  name: userfastapi-server
+  namespace: userfastapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userfastapi-server
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: userfastapi-server
+    spec:
+      containers:
+        - name: userfastapi-server
+          image: mgvieira/userfastapi-server:latest
+          envFrom:
+            - configMapRef:
+                name: userfastapi-server-configmap
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userfastapi-server
+  labels:
+    app: userfastapi-server
+  namespace: userfastapi
+spec:
+  selector:
+    app: userfastapi-server
+  # type: LoadBalancer
+  type: NodePort
+  ports:
+    - port: 8000
+      protocol: TCP
+      targetPort: 8000

@@ -8,7 +8,7 @@ package_name = "fast_api_usuarios"
 
 
 main_ns = {}
-ver_path = convert_path("src/version.py")
+ver_path = convert_path("app/version.py")
 with open(ver_path) as ver_file:
     exec(ver_file.read(), main_ns)
 
@@ -35,7 +35,7 @@ dev_requirements = [
 
 setup(
     name=package_name,
-    package_dir={'src': 'src'},
+    package_dir={'app': 'app'},
     packages=find_packages(),
     python_requires=">=3.10.7",
     install_requires=requirements,

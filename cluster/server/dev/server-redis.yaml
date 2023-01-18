@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: userfastapi-server-redis
+  name: userfastapi-server-redis
+  namespace: userfastapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userfastapi-server-redis
+  template:
+    metadata:
+      labels:
+        app: userfastapi-server-redis
+    spec:
+      containers:
+        - image: redis:6
+          name: userfastapi-server-redis
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+          # volumeMounts:
+          #   - name: redis-storage
+          #     mountPath: /data/redis
+      # volumes:
+      #   - name: redis-storage
+      #     persistentVolumeClaim:
+      #       claimName: redis-storage-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userfastapi-server-redis
+  labels:
+    app: userfastapi-server-redis
+  namespace: userfastapi
+spec:
+  selector:
+    app: userfastapi-server-redis
+  type: ClusterIP
+  ports:
+    - port: 6363
+      protocol: TCP
+      targetPort: 6379

@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta10
+
+kind: Config
+
+deploy:
+  kubectl:
+    manifests:
+      - ./cluster/default/*
+      - ./cluster/server/dev/*
+      - ./cluster/ingress/dev/ingress.yaml
+build:
+  local:
+    push: false
+  artifacts:
+    - image: mgvieira/userfastapi-server
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "app/**/*..py"
+            dest: .
