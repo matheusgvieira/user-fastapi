@@ -23,6 +23,9 @@ nvenv:
 install:
 	pip3 install -e .
 
+install-dev:
+	pip3 install -e ."[dev]"
+
 clean:
 	rm -rf pytest
 	rm -rf .cache
@@ -37,7 +40,9 @@ flake:
 	flake8 tests/unit/*.py
 
 black:
-	black src/*.py
+	black app/*.py
+	black app/config/*.py
+	black app/database/*.py
 	black tests/unit/*.py
 
 mypy:
@@ -48,20 +53,32 @@ lint:
 	pylint src/*.py
 
 check:
-	black src/*.py
+	black app/*.py
+	black app/config/*.py
+	black app/database/*.py
+	black app/services/*.py
 	black tests/integration/*.py
 	black tests/unit/*.py
-	isort src/*.py
+	isort app/*.py
+	isort app/config/*.py
+	isort app/database/*.py
+	isort app/services/*.py
 	isort tests/integration/*.py
 	isort tests/unit/*.py
-	flake8 src/*.py
+	flake8 app/*.py
 	flake8 tests/integration/*.py
 	flake8 tests/unit/*.py
 	mypy tests
-	mypy src
+	mypy app
 
 tdd:
 	pytest -m "usuarios" --disable-pytest-warnings
 
-run:
+run-uvicorn:
 	uvicorn main:app --reload
+
+run:
+	skaffold dev --port-forward
+
+install-nginx:
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.0/deploy/static/provider/cloud/deploy.yaml

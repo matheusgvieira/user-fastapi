@@ -17,5 +17,5 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "app/**/*..py"
+          - src: "app/**/*.py"
             dest: .

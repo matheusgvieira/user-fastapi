@@ -7,10 +7,10 @@ WORKDIR /src
 ENV PY_ENV=production
 
 # 
-COPY ./setup.py /src/setup.py
+COPY setup.py /src/setup.py
 
 #
-COPY ./app /src/app
+COPY app /src/app
 
 # 
 RUN pip install --no-cache-dir --upgrade .

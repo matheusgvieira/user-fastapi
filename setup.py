@@ -16,6 +16,8 @@ requirements = [
     "fastapi==0.89.1",
     "uvicorn==0.20.0",
     "ormar==0.12.0",
+    "psycopg2==2.9.5",
+    "asyncpg==0.27.0",
 ]
 
 dev_requirements = [
